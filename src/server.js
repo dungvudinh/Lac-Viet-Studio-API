@@ -8,4 +8,4 @@ app.get('/', (req,res)=>{
     res.send('HELLO WORLD')
 })
 
-app.listen(port, hostName, ()=> console.log(`server is running on port ${port}`))
+app.listen(port, hostName, ()=> console.log(`server is running on port:${port}`))
