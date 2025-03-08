@@ -1,5 +1,23 @@
-//JM4N18jLqQQ0V3jm
-//anhkho881
+import { MongoClient,ServerApiVersion } from "mongodb";
+import { env } from "./environment.js";
+let lacVietStudioInstance = null;
+const mongoClientInstance = new MongoClient(env.MONGODB_URI, {
+    serverApi:{
+        version:ServerApiVersion.v1,
+        strict:true, 
+        deprecationErrors:true
+    }
+})
 
-const MONGODB_URI = 'mongodb+srv://anhkho881:JM4N18jLqQQ0V3jm@cluster0.3jfts.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-const DB_NAME = 'LacVietStudio'
+export const CONNECT_DB = async () =>{
+    await mongoClientInstance.connect();
+    lacVietStudioInstance = mongoClientInstance.db(env.DATABASE_NAME);
+}
+export const GET_DB = ()=>{
+    if(!lacVietStudioInstance) throw new Error('Must connect to Database first');
+    return lacVietStudioInstance;
+}
+
+export const CLOSE_DB = async ()=>{
+    await mongoClientInstance.close();
+}
