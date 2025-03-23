@@ -2,11 +2,11 @@ import { StatusCodes } from "http-status-codes";
 import Joi from "joi";
 import ApiError from "~/utils/apiError";
 
-
+const correctCondition = Joi.object({
+    name:Joi.string().required().min(3).max(30).trim().strict(),
+})
 const createNew = async (req, res, next) => {
-    const correctCondition = Joi.object({
-        name:Joi.string().required().min(3).max(30).trim().strict(),
-    })
+    
     try 
     {
         await correctCondition.validateAsync(req.body, {abortEarly:false})
@@ -20,6 +20,7 @@ const update = async (req,res, next)=>
 {
     try 
     {
+        await correctCondition.validateAsync(req.body, {abortEarly:false})
         next()
     }
     catch(error)

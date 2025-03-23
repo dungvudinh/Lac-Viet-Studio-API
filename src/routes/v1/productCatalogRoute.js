@@ -10,5 +10,6 @@ Router.route('/')
 Router.route('/:id')
     .put(productCatalogValidation.update, productCatalogController.update)
     .get(productCatalogController.getById)
+    .delete(productCatalogController.remove)
 
-export const productCatalogRoute = Router;
+export default Router;

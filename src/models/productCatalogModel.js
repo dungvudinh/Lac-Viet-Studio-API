@@ -10,7 +10,7 @@ const PRODUCT_CATALOG_COLLECTION_SCHEMA = Joi.object({
     deletedAt: Joi.date().timestamp('javascript').default(null)
 })
 
-const validateBeforeCreate = async (data) =>
+const validation = async (data) =>
 {
     return await PRODUCT_CATALOG_COLLECTION_SCHEMA.validateAsync(data, {abortEarly:false})
 }
@@ -18,7 +18,7 @@ const createNew = async (data)=>
 {
     try 
     {
-        const validatedData = await validateBeforeCreate(data);
+        const validatedData = await validation(data);
         return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).insertOne(validatedData);
     }
     catch(error)
@@ -56,11 +56,23 @@ const update = async (id, newData)=>
 {
     try 
     {
+        const validatedData = await validation(newData);
         return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).findOneAndUpdate(
-            {_id:id}, 
-            {$set:newData}, 
+            {_id:new ObjectId(id)}, 
+            {$set:validatedData}, 
             {new: true, runValidators: true}
         )
+    }
+    catch(error)
+    {
+        throw new Error(error)
+    }
+}
+const remove = async (id)=>
+{
+    try 
+    {
+        return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).findOneAndDelete({_id:new ObjectId(id)})
     }
     catch(error)
     {
@@ -73,5 +85,6 @@ export const productCalalogModel = {
     createNew,
     getAll, 
     getById, 
-    update
+    update,
+    remove
 }

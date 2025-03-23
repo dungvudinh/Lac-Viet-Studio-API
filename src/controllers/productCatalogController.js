@@ -5,7 +5,6 @@ const createNew = async (req, res, next)=>{
     try
     {
         const result = await productCatalogService.createNew(req.body);
-        console.log(result)
         res.status(StatusCodes.CREATED).json(result)
     }
     catch(error)
@@ -52,10 +51,24 @@ const update = async (req,res, next)=>
         next(error)
     }
 }
+const remove = async (req, res, next)=>
+{
+    try 
+    {
+        const {id} = req.params;
+        const result = await productCatalogService.remove(id);
+        return res.status(StatusCodes.OK).json(result)
+    }
+    catch(error)
+    {
+        next(error)
+    }
+}
 export const productCatalogController  = {
     createNew,
     getAll, 
     getById,
-    update
-    
+    update,
+    remove
+
 }
