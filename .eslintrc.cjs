@@ -5,6 +5,7 @@
  * Sample Eslint config for NodeJS ExpressJS MongoDB project
  */
 module.exports = {
+  env: { es2020: true, node: true },
   extends: [
     'eslint:recommended'
   ],
@@ -37,5 +38,5 @@ module.exports = {
     'comma-dangle': 1,
     'comma-spacing': 1,
     'arrow-spacing': 1
-  },
+  }
 }
