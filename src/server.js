@@ -4,11 +4,12 @@ import AsyncExitHook from 'async-exit-hook'
 import {env} from './config/environment.js'
 import  APIs_V1  from './routes/v1/index.js'
 import cors from 'cors'
+import path from 'path'
 const app = express()
 const hostName = 'localhost'
-
 const START_SERVER =  ()=>{
     app.use(cors())
+    app.use(express.static(path.join(__dirname('build'))))
     app.use('/v1', APIs_V1)
     app.use(express.json())
     app.use(express.urlencoded({extended:true}))
