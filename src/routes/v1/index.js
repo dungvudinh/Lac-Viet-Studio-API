@@ -1,11 +1,12 @@
 import express from "express";
 import {StatusCodes} from 'http-status-codes'
-import { BoardRoutes } from './boardRoutes.js'
+import productRoute from './productRoutes'
+import productCatalog from './productCatalogRoute'
 
 const Router = express.Router();
 
-Router.get("/status", async (req, res) => {res.status(StatusCodes.OK).json({ message: "Hello World" })});
-Router.use('/boards', BoardRoutes)
+Router.use('/products', productRoute)
+Router.use('product-catalogs', productCatalog)
 
 
 export default Router;

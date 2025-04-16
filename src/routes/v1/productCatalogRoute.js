@@ -8,8 +8,8 @@ Router.route('/')
     .get(productCatalogController.getAll)
     .post(productCatalogValidation.createNew, productCatalogController.createNew)
 Router.route('/:id')
-    .put(productCatalogValidation.update, productCatalogController.update)
     .get(productCatalogController.getById)
+    .put(productCatalogValidation.update, productCatalogController.update)
     .delete(productCatalogController.remove)
 
 export default Router;

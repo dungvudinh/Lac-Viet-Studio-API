@@ -3,15 +3,17 @@ import { CONNECT_DB, GET_DB, CLOSE_DB } from './config/mongodb.js'
 import AsyncExitHook from 'async-exit-hook'
 import {env} from './config/environment.js'
 import  APIs_V1  from './routes/v1/index.js'
+import cors from 'cors'
 const app = express()
 const hostName = 'localhost'
 
 const START_SERVER =  ()=>{
+    app.use(cors())
     app.use('/v1', APIs_V1)
     app.use(express.json())
     app.use(express.urlencoded({extended:true}))
     
-    app.listen(env.APP_PORT, hostName, ()=> console.log(`server is running on port:${env.APP_PORT}`))
+    app.listen(env.APP_PORT, env.APP_HOST, ()=> console.log(`server is running on port:${env.APP_PORT}`))
     AsyncExitHook(()=>{
         console.log('Disconnecting from Database')
         CLOSE_DB()
