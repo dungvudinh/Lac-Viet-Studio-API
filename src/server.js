@@ -14,7 +14,7 @@ const START_SERVER =  ()=>{
     app.use(express.json())
     app.use(express.urlencoded({extended:true}))
     
-    app.listen(env.APP_PORT, env.APP_HOST, ()=> console.log(`server is running on port:${env.APP_PORT}`))
+    app.listen(env.APP_PORT, '0.0.0.0', ()=> console.log(`server is running on port:${env.APP_PORT}`))
     AsyncExitHook(()=>{
         console.log('Disconnecting from Database')
         CLOSE_DB()
