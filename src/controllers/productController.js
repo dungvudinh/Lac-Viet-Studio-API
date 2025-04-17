@@ -37,6 +37,7 @@ const getAll = async (req, res, next)=>
 {
     try 
     {
+        console.log('Get All Method')
         const result = await productService.getAll();
         res.status(StatusCodes.OK).json(result)
     }
