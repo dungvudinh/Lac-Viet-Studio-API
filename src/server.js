@@ -10,10 +10,10 @@ const hostName = 'localhost'
 const START_SERVER =  ()=>{
     app.use(cors())
     app.use(express.static(path.join(__dirname, 'build', 'src')));
-    app.use('/v1', APIs_V1)
     app.use(express.json())
     app.use(express.urlencoded({extended:true}))
-    
+    app.use('/v1', APIs_V1)
+    app.use('/images', express.static(path.join(__dirname, 'assets/Images')));
     app.listen(env.APP_PORT, '0.0.0.0', ()=> console.log(`server is running on port:${env.APP_PORT}`))
     AsyncExitHook(()=>{
         console.log('Disconnecting from Database')

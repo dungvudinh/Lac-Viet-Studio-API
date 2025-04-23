@@ -5,6 +5,7 @@ import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators"
 
 const correctCondition = Joi.object({
     name: Joi.string().min(3).max(30).trim().required(),
+    image: Joi.string().required().trim().strict(), 
     listedPrice: Joi.number().positive().required(), 
     sellingPrice: Joi.number().positive().required(),
     age: Joi.number().integer().min(1).max(120).allow(null).default(null),
@@ -13,6 +14,7 @@ const correctCondition = Joi.object({
 const createNew = async (req, res, next) => {
     try 
     {
+        console.log(req.body)
         await correctCondition.validateAsync(req.body, {abortEarly:false})
         next();
     }

@@ -2,7 +2,6 @@ import Joi from "joi";
 import { GET_DB } from "~/config/mongodb";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
 import { ObjectId } from "mongodb";
-import cloudinary from "~/config/cloundinary";
 
 const PRODUCT_COLLECTION_NAME = 'product'
 const PRODUCT_COLLECTION_SCHEMA = Joi.object({

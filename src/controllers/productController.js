@@ -4,12 +4,12 @@ import { productService } from "~/services/productService";
 const createNew = async (req, res, next)=>{
     try
     {
-        if (!req.file) {
-            throw new ApiError(StatusCodes.BAD_REQUEST, 'Image is required');
-        }
+        // if (!req.file) {
+        //     throw new ApiError(StatusCodes.BAD_REQUEST, 'Image is required');
+        // }
         const result = await productService.createNew({
-            ...req.body,
-            image: req.file.path
+            ...req.body
+            // image: req.file.path
         });
         res.status(StatusCodes.CREATED).json(result)
     }
