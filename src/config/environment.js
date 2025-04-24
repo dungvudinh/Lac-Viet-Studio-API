@@ -11,6 +11,6 @@ export const env = {
     EMAIL_PORT: process.env.EMAIL_PORT,
     EMAIL_USER:process.env.EMAIL_USER,
     EMAIL_PASS:process.env.EMAIL_PASS,
-    CLIENT_URL:process.env.CLIENT_URL,
+    APP_URL:process.env.BUILD_MODE === 'production' ? process.env.PROD_URL : process.env.DEV_URL,
     RESEND_APIKEY:process.env.RESEND_APIKEY
 }

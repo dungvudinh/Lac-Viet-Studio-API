@@ -6,8 +6,8 @@ const signup = async (req, res, next) =>
 {
     try 
     {
-        const result = userService.signup(req.body)
-        res.status(StatusCodes.CREATED).json(result)
+        userService.signup(req.body)
+        res.status(StatusCodes.CREATED).json({msg:'User registered successfully. Verification email sent.'})
     }
     catch(error)
     {
