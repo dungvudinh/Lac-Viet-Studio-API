@@ -11,5 +11,7 @@ export const env = {
     EMAIL_PORT: process.env.EMAIL_PORT,
     EMAIL_USER:process.env.EMAIL_USER,
     EMAIL_PASS:process.env.EMAIL_PASS,
-    CLIENT_URL:process.env.CLIENT_URL
+    CLIENT_URL:process.env.CLIENT_URL,
+    SEND_GRID_SID:process.env.SEND_GRID_SID,
+    SEND_GRID_SECRET:process.env.SEND_GRID_SECRET
 }

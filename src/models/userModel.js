@@ -47,12 +47,18 @@ const validation = async (data) =>
     return await USER_COLLECTION_SCHEMA.validateAsync(data,{abortEarly:false})
 }
 const transporter = nodemailer.createTransport({
-  host:env.EMAIL_HOST,
-  port:env.EMAIL_PORT,
-  secure:false, 
+  // host:env.EMAIL_HOST,
+  // port:env.EMAIL_PORT,
+  // secure:false, 
+  // auth:{
+  //   user:env.EMAIL_USER,
+  //   pass:env.EMAIL_PASS
+  // }
+  service:'SendGrid',
   auth:{
-    user:env.EMAIL_USER,
-    pass:env.EMAIL_PASS
+    user:env.SEND_GRID_SID,
+    pass:env.SEND_GRID_SECRET
+
   }
 })
 
