@@ -5,22 +5,35 @@ import {env} from './config/environment.js'
 import  APIs_V1  from './routes/v1/index.js'
 import cors from 'cors'
 import path from 'path'
+import cookieParser from 'cookie-parser'
 const app = express()
-const hostName = 'localhost'
-const START_SERVER =  ()=>{
-    app.use(cors())
-    app.use(express.static(path.join(__dirname, 'build', 'src')));
+const START_SERVER = () => {
+    // 1. Parse body before any route
+    app.use(cookieParser())
+    app.use(cors({
+        origin: env.APP_FRONT_URL,
+        credentials: true,               // Cho phép gửi cookie, authorization header, etc.
+      }));
+    app.use(express.static(path.join(__dirname, 'build', 'src')))
     app.use(express.json())
-    app.use(express.urlencoded({extended:true}))
+    app.use(express.urlencoded({ extended: true }))
+
+    // 2. Then use your routes
     app.use('/v1', APIs_V1)
-    app.use('/images', express.static(path.join(__dirname, 'assets/Images')));
-    app.listen(env.APP_PORT, '0.0.0.0', ()=> console.log(`server is running on port:${env.APP_PORT}`))
-    AsyncExitHook(()=>{
+
+    // 3. Start server
+    app.listen(env.APP_PORT, '0.0.0.0', () => {
+        console.log(`server is running on port: ${env.APP_PORT}`)
+    })
+
+    // 4. Handle graceful shutdown
+    AsyncExitHook(() => {
         console.log('Disconnecting from Database')
         CLOSE_DB()
         console.log('Disconnected from Database')
     })
 }
+
 
 (async ()=>{
     try 

@@ -12,5 +12,8 @@ export const env = {
     EMAIL_USER:process.env.EMAIL_USER,
     EMAIL_PASS:process.env.EMAIL_PASS,
     APP_URL:process.env.BUILD_MODE === 'production' ? process.env.PROD_URL : process.env.DEV_URL,
-    RESEND_APIKEY:process.env.RESEND_APIKEY
+    APP_FRONT_URL: process.env.BUILD_MODE === 'production' ? process.env.PROD_FRONT_URL : process.env.DEV_FRONT_URL,
+    RESEND_APIKEY:process.env.RESEND_APIKEY, 
+    ACCESS_TOKEN_SECRET_KEY :process.env.ACCESS_TOKEN_SECRET_KEY, 
+    REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY
 }
