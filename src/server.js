@@ -7,12 +7,18 @@ import cors from 'cors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 const app = express()
-console.log(env.APP_FRONT_URL)
+const allowOrigins = [process.env.PROD_FRONT_URL, process.env.DEV_FRONT_URL]
+
 const START_SERVER = () => {
     // 1. Parse body before any route
     app.use(cookieParser())
     app.use(cors({
-        origin: env.APP_FRONT_URL,
+        origin: function(origin, callback){
+            if(allowOrigins.includes(origin))
+                callback(null, true)
+            else 
+                callback(new Error('Not allow by CORS'))
+        },
         credentials: true,               // Cho phép gửi cookie, authorization header, etc.
       }));
     app.use(express.static(path.join(__dirname, 'build', 'src')))
