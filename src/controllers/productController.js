@@ -7,6 +7,7 @@ const createNew = async (req, res, next)=>{
         // if (!req.file) {
         //     throw new ApiError(StatusCodes.BAD_REQUEST, 'Image is required');
         // }
+        console.log(req)
         const result = await productService.createNew({
             ...req.body
             // image: req.file.path

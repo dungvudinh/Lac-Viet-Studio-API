@@ -3,6 +3,7 @@ import { GET_DB } from "~/config/mongodb";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
 import { ObjectId } from "mongodb";
 
+
 const PRODUCT_COLLECTION_NAME = 'product'
 const PRODUCT_COLLECTION_SCHEMA = Joi.object({
     name: Joi.string().required().min(3).max(50).trim().strict(), 

@@ -15,5 +15,6 @@ export const env = {
     APP_FRONT_URL: process.env.BUILD_MODE === 'production' ? process.env.PROD_FRONT_URL : process.env.DEV_FRONT_URL,
     RESEND_APIKEY:process.env.RESEND_APIKEY, 
     ACCESS_TOKEN_SECRET_KEY :process.env.ACCESS_TOKEN_SECRET_KEY, 
-    REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY
+    REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY,
+    CLOUDINARY_NAME: process.env.CLOUDINARY_NAME
 }

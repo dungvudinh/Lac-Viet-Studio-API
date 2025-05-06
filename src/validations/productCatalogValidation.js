@@ -3,8 +3,8 @@ import Joi from "joi";
 import ApiError from "~/utils/apiError";
 
 const correctCondition = Joi.object({
-    name:Joi.string().required().min(3).max(30).trim().strict(),
-})
+    name:Joi.string().required(),
+}).unknown(true)
 const createNew = async (req, res, next) => {
     
     try 

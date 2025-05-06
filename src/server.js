@@ -20,6 +20,8 @@ const START_SERVER = () => {
                 callback(new Error('Not allow by CORS'))
         },
         credentials: true,               // Cho phép gửi cookie, authorization header, etc.
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow OPTIONS
+        allowedHeaders: ['Content-Type', 'Authorization'], 
       }));
     app.use(express.static(path.join(__dirname, 'build', 'src')))
     app.use(express.json())
@@ -27,7 +29,13 @@ const START_SERVER = () => {
 
     // 2. Then use your routes
     app.use('/v1', APIs_V1)
-
+    app.use((err, req, res, next) => {
+        const status = err.statusCode || 500;
+        const message = err.message || 'Internal Server Error';
+  
+        console.error('[Error Middleware]', err); // Optional
+        res.status(status).json({ msg: message });
+      });
     // 3. Start server
     app.listen(env.APP_PORT, '0.0.0.0', () => {
         console.log(`server is running on port: ${env.APP_PORT}`)

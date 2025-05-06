@@ -1,11 +1,10 @@
 import { StatusCodes } from "http-status-codes";
-import ApiError from "~/utils/apiError";
 import { productCatalogService } from "~/services/productCatalogService";
 const createNew = async (req, res, next)=>{
     try
     {
-        const result = await productCatalogService.createNew(req.body);
-        res.status(StatusCodes.CREATED).json(result)
+        await productCatalogService.createNew(req.body);
+        res.status(StatusCodes.CREATED).json({msg:'Create product catalog successfully'})
     }
     catch(error)
     {
@@ -41,10 +40,8 @@ const update = async (req,res, next)=>
 {
     try 
     {
-        const {id} = req.params;
-        const newData = req.body;
-        const result = await productCatalogService.update(id, newData);
-        res.status(StatusCodes.OK).json(result)
+        await productCatalogService.update(req.body);
+        res.status(StatusCodes.OK).json({msg:'Update product catalog successfully'})
     }
     catch(error)
     {
@@ -56,11 +53,12 @@ const remove = async (req, res, next)=>
     try 
     {
         const {id} = req.params;
-        const result = await productCatalogService.remove(id);
-        return res.status(StatusCodes.OK).json(result)
+        await productCatalogService.remove(id);
+        return res.status(StatusCodes.OK).json({msg:'Delete product catalog successfully'})
     }
     catch(error)
     {
+        console.log(error)
         next(error)
     }
 }

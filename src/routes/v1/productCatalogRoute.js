@@ -7,8 +7,8 @@ const Router = express.Router();
 Router.route('/')
     .get(productCatalogController.getAll)
     .post(productCatalogValidation.createNew, productCatalogController.createNew)
-Router.route('/:id')
     .put(productCatalogValidation.update, productCatalogController.update)
+Router.route('/:id')
     .get(productCatalogController.getById)
     .delete(productCatalogController.remove)
 

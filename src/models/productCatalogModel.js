@@ -6,20 +6,23 @@ const PRODUCT_CATALOG_COLLECTION_SCHEMA = Joi.object({
     name: Joi.string().required().min(3).max(50).trim().strict(), 
     slug: Joi.string().required().min(3).trim().strict(), 
     createdAt: Joi.date().timestamp('javascript').default(Date.now),
-    updatedAt: Joi.date().timestamp('javascript').default(null),
-    deletedAt: Joi.date().timestamp('javascript').default(null)
+    updatedAt: Joi.date().timestamp('javascript').allow(null).default(null),
+    deletedAt: Joi.date().timestamp('javascript').allow(null).default(null)
 })
 
 const validation = async (data) =>
 {
-    return await PRODUCT_CATALOG_COLLECTION_SCHEMA.validateAsync(data, {abortEarly:false})
+
+    data.name = data.name.trim().replace(/\s+/g, ' ') 
+    return await PRODUCT_CATALOG_COLLECTION_SCHEMA.validateAsync(data, {abortEarly:false, stripUnknown:true})
 }
+
 const createNew = async (data)=>
 {
     try 
     {
         const validatedData = await validation(data);
-        return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).insertOne(validatedData);
+        await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).insertOne(validatedData);
     }
     catch(error)
     {
@@ -30,9 +33,7 @@ const getAll = async ()=>
 {
     try 
     {
-        const data  = await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).find({}).toArray();
-        console.log(data)
-        return data
+        return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).find({}).toArray();
     }
     catch(error)
     {
@@ -52,13 +53,14 @@ const getById = async (id)=>
     }
 }
 
-const update = async (id, newData)=>
+const update = async (newData)=>
 {
     try 
     {
         const validatedData = await validation(newData);
+        console.log(validatedData)
         return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).findOneAndUpdate(
-            {_id:new ObjectId(id)}, 
+            {_id:new ObjectId(newData._id)}, 
             {$set:validatedData}, 
             {new: true, runValidators: true}
         )

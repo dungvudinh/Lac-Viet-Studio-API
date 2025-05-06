@@ -1,13 +1,19 @@
 import { slugify } from "~/utils/fomatters";
 import { productCalalogModel } from "~/models/productCatalogModel";
+import { GET_DB } from "~/config/mongodb";
+import ApiError from "~/utils/apiError";
+import { StatusCodes } from "http-status-codes";
 const createNew = async(data)=>
 {
     try 
     {
-        const newData = {...data, slug: slugify(data.name)};
-        const {insertedId} =await productCalalogModel.createNew(newData);
-        //return new data 
-        return await productCalalogModel.getById(insertedId)
+        const name = data.name.trim().replace(/\s+/g, ' ') // remove blank gap
+        const slug = slugify(name)
+        const existing = await GET_DB().collection(productCalalogModel.PRODUCT_CATALOG_COLLECTION_NAME).findOne({slug})
+        if(existing)
+            throw new ApiError(StatusCodes.CONFLICT, 'Product catalog already exists')
+        const newData = {name,slug};
+        await productCalalogModel.createNew(newData);
     }
     catch(error)
     {
@@ -40,17 +46,18 @@ const getById = async (id)=>
         throw error
     }
 }
-const update  = async (id, data) =>
+const update  = async (data) =>
 {
     try 
     {
         const newData = {
-            ...data, 
+            _id: data._id,
+            name: data.name,
             slug:slugify(data.name)
         }
-        const result = await productCalalogModel.update(id, newData);
+        const result = await productCalalogModel.update(newData);
         if(!result)
-            throw new ApiError(StatusCodes.NOT_FOUND, "update failed, product catalog not found")
+            throw new ApiError(StatusCodes.NOT_FOUND, "Update failed, product catalog not found")
         return result
     }
     catch(error)
@@ -64,8 +71,7 @@ const remove = async (id)=>
         {
             const result = await productCalalogModel.remove(id);
             if(!result)
-                throw new ApiError(StatusCodes.NOT_FOUND, "delete failed, product catalog not found")
-            return await productCalalogModel.getAll()
+                throw new ApiError(StatusCodes.NOT_FOUND, "Delete failed, product catalog not found")
         }
         catch(error)
         {
