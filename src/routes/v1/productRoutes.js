@@ -1,7 +1,6 @@
 import express from "express";
-import {StatusCodes} from 'http-status-codes'
+import { productController } from "~/controllers/productController.js";
 import { productValidation } from "~/validations/productValidation.js";
-import { productController } from "~/controllers/productController";
 import upload from '~/middlewares/upload'
 
 const Router = express.Router();

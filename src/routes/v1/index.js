@@ -1,8 +1,7 @@
 import express from "express";
-import {StatusCodes} from 'http-status-codes'
-import productRoute from './productRoutes'
-import productCatalogRoute from './productCatalogRoute'
-import userRoute from './userRoute'
+import productRoute from './productRoutes.js'
+import productCatalogRoute from './productCatalogRoute.js'
+import userRoute from './userRoute.js'
 const Router = express.Router();
 
 Router.use('/products', productRoute)
