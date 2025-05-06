@@ -19,13 +19,11 @@ const START_SERVER = () => {
             else 
                 callback(new Error('Not allow by CORS'))
         },
-        credentials: true, // Cho phép gửi cookie, authorization header, etc.
+        credentials: true,               // Cho phép gửi cookie, authorization header, etc.
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow OPTIONS
         allowedHeaders: ['Content-Type', 'Authorization'], 
       }));
-    // app.use(express.static(path.join(__dirname, 'build', 'src')))
-    app.use(express.static(path.join(__dirname, 'dist')));
-
+    app.use(express.static(path.join(__dirname, 'build', 'src')))
     app.use(express.json())
     app.use(express.urlencoded({ extended: true }))
 
