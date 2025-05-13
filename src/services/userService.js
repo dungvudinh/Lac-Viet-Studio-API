@@ -4,6 +4,7 @@ import { userModel } from "~/models/userModel";
 import { GET_DB } from "~/config/mongodb";
 import { env } from "~/config/environment";
 import { ObjectId } from "mongodb";
+import { sessionModel } from "~/models/sessionModel";
 
 const signup = async (data) =>
 {
@@ -153,6 +154,19 @@ const logout = async (refreshToken) =>
         throw error
     }
 }
+const checkSession = async (refreshToken)=>
+{
+    try 
+    {
+        const session = await GET_DB().collection(sessionModel.SESSION_COLLECTION_NAME).findOne({refreshToken})
+        if(!session)
+            throw new ApiError(StatusCodes.UNAUTHORIZED, 'Session not found')
+    }
+    catch(error)
+    {
+        throw error
+    }
+}
 export const userService = {
     signup,
     createNew,
@@ -163,5 +177,6 @@ export const userService = {
     setNewPassword,
     login,
     refreshToken,
-    logout
+    logout, 
+    checkSession
 }

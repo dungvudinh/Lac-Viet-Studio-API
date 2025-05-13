@@ -49,7 +49,18 @@ const getById = async (id)=>
     }
     catch(error)
     {
-        throw new Error(error);
+        throw error;
+    }
+}
+const getBySlug = async (slug)=>
+{
+    try 
+    {
+        return await GET_DB().collection(PRODUCT_CATALOG_COLLECTION_NAME).findOne({slug})
+    }
+    catch(error)
+    {
+        throw error
     }
 }
 
@@ -81,12 +92,13 @@ const remove = async (id)=>
         throw new Error(error)
     }
 }
-export const productCalalogModel = {
+export const productCatalogModel = {
     PRODUCT_CATALOG_COLLECTION_NAME, 
     PRODUCT_CATALOG_COLLECTION_SCHEMA, 
     createNew,
     getAll, 
     getById, 
     update,
-    remove
+    remove,
+    getBySlug
 }

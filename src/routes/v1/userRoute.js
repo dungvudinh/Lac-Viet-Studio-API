@@ -13,4 +13,5 @@ Router.post('/set-new-password/:token', userValidation.setNewPassword, userContr
 Router.post('/login', userValidation.login, userController.login)
 Router.post('/refresh-token', userController.refreshToken)
 Router.post('/logout', userController.logout)
+Router.get('/check-session', userController.checkSession)
 export default Router;

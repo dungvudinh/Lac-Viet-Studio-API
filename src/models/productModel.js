@@ -2,17 +2,26 @@ import Joi from "joi";
 import { GET_DB } from "~/config/mongodb";
 import { OBJECT_ID_RULE, OBJECT_ID_RULE_MESSAGE } from "~/utils/validators";
 import { ObjectId } from "mongodb";
+import mongoose from "mongoose";
 
-
+const objectId = (value, helpers) => {
+    if (value instanceof mongoose.Types.ObjectId || mongoose.Types.ObjectId.isValid(value)) {
+        return value;
+    }
+    return helpers.error('any.invalid');
+};
 const PRODUCT_COLLECTION_NAME = 'product'
 const PRODUCT_COLLECTION_SCHEMA = Joi.object({
     name: Joi.string().required().min(3).max(50).trim().strict(), 
     slug: Joi.string().required().min(3).trim().strict(), 
-    image: Joi.string().required().trim().strict(), 
+    images:Joi.array().items(Joi.object({
+        url: Joi.string().uri().required(), 
+        isRepresentative:Joi.boolean().optional()
+    })),
     listedPrice: Joi.number().positive().required(), 
     sellingPrice: Joi.number().positive().required(), 
     age: Joi.number().integer().min(1).max(120).allow(null).default(null), 
-    catalogId: Joi.string().required().pattern(OBJECT_ID_RULE).message(OBJECT_ID_RULE_MESSAGE), 
+    catalogId: Joi.custom(objectId).required(),
     createdAt: Joi.date().timestamp('javascript').default(Date.now),
     updatedAt: Joi.date().timestamp('javascript').default(null),
     deletedAt: Joi.date().timestamp('javascript').default(null)
@@ -32,7 +41,7 @@ const createNew = async (data)=>
     }
     catch(error)
     {
-        throw new Error(error)
+        throw error
     }
 }
 const getById = async (id)=>
@@ -43,19 +52,19 @@ const getById = async (id)=>
     }
     catch(error)
     {
-        throw new Error(error)
+        throw error
     }
 }
 
-const getAll = async ()=>
+const getAll = async (_id)=>
 {
     try 
     {
-        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).find({}).toArray();;
+        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).find({catalogId:new ObjectId(_id)}).toArray();;
     }
     catch(error)
     {
-        throw new Error(error)
+        throw error
     }
 }
 
@@ -72,7 +81,7 @@ const update = async (id, newData)=>
     }
     catch(error)
     {
-        throw new Error(error)
+        throw error
     }
 }
 const remove = async (id)=>
@@ -83,7 +92,18 @@ const remove = async (id)=>
     }
     catch(error)
     {
-        throw new Error(error)
+        throw error
+    }
+}
+const getBySlug = async (slug)=>
+{
+    try 
+    {
+        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).findOne({slug})
+    }
+    catch(error)
+    {
+        throw error
     }
 }
 export const productModel = {
@@ -93,5 +113,6 @@ export const productModel = {
     getById,
     getAll,
     update,
-    remove
+    remove,
+    getBySlug
 }

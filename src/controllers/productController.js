@@ -4,15 +4,14 @@ import { productService } from "~/services/productService";
 const createNew = async (req, res, next)=>{
     try
     {
-        // if (!req.file) {
-        //     throw new ApiError(StatusCodes.BAD_REQUEST, 'Image is required');
-        // }
-        console.log(req)
-        const result = await productService.createNew({
-            ...req.body
-            // image: req.file.path
-        });
-        res.status(StatusCodes.CREATED).json(result)
+        const images = req.files.map((file, index)=>{
+            var isRepresentative = false;
+            if(index === 0) isRepresentative = true;
+            return {url:file.path, isRepresentative}
+        })
+        const newProduct = {...req.body, images};
+        await productService.createNew(newProduct);
+        res.status(StatusCodes.CREATED).json({msg:'Create product successfully'})
     }
     catch(error)
     {
@@ -38,8 +37,8 @@ const getAll = async (req, res, next)=>
 {
     try 
     {
-        console.log('Get All Method')
-        const result = await productService.getAll();
+        const {productCatalogSlug} = req.params;
+        const result = await productService.getAll(productCatalogSlug);
         res.status(StatusCodes.OK).json(result)
     }
     catch(error)

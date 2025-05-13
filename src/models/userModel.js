@@ -345,6 +345,8 @@ const refreshToken = async (refreshToken) =>
     if(!refreshToken) 
       throw new Error('Refresh token is required')
     const session = await GET_DB().collection(sessionModel.SESSION_COLLECTION_NAME).findOne({refreshToken})
+    if(!session)
+      throw new Error('Session not found or refresh token is invalid')
     //Verify the refresh token
     try 
     {
@@ -413,6 +415,7 @@ const logout = async (refreshToken) =>
     throw error
   }
 }
+
 const getByEmail = async (email)=>
   {
       try 

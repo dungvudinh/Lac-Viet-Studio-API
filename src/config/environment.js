@@ -16,5 +16,7 @@ export const env = {
     RESEND_APIKEY:process.env.RESEND_APIKEY, 
     ACCESS_TOKEN_SECRET_KEY :process.env.ACCESS_TOKEN_SECRET_KEY, 
     REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY,
-    CLOUDINARY_NAME: process.env.CLOUDINARY_NAME
+    CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
+    API_KEY:process.env.API_KEY,
+    API_SECRET:process.env.API_SECRET
 }

@@ -1,17 +1,26 @@
 import { slugify } from "~/utils/fomatters";
 import { productModel } from "~/models/productModel";
+import { productCatalogModel } from "~/models/productCatalogModel";
 import ApiError from "~/utils/apiError";
 import { StatusCodes } from "http-status-codes";
+import mongoose from "mongoose";
 const createNew = async (data)=>
 {
     try 
     {
-        const newData = {
-            ...data, 
-            slug:slugify(data.name)
-        }
-        const {insertedId} = await productModel.createNew(newData)
-        return await productModel.getById(insertedId)
+         
+        const slug = slugify(data.name);
+        const existedProductCatalog = await productCatalogModel.getBySlug(data.catalogSlug)
+        if(!existedProductCatalog)
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Product catalog not found')
+        const existedProduct = await productModel.getBySlug(slug);
+        if(existedProduct)
+            throw new ApiError(StatusCodes.CONFLICT, 'Product already exists')
+        // const newData = {...data, productCatalogId: existedProductCatalog._id,slug }
+        const {catalogSlug, ...validData} = data;
+        validData.catalogId =existedProductCatalog._id;
+        validData.slug = slug;
+        await productModel.createNew(validData)
     }
     catch(error)
     {
@@ -24,7 +33,7 @@ const getById = async (id)=>
     {
         const result = await productModel.getById(id)
         if(!result)
-            throw new ApiError(StatusCodes.NOT_FOUND, "product not found")
+            throw new ApiError(StatusCodes.NOT_FOUND, "Product not found")
         return result;
     }
     catch(error)
@@ -32,11 +41,14 @@ const getById = async (id)=>
         throw error
     }
 }
-const getAll = async ()=>
+const getAll = async (productCatalogSlug)=>
 {
     try 
     {
-        return await productModel.getAll();
+        const productCatalog = await productCatalogModel.getBySlug(productCatalogSlug)
+        if(!productCatalog)
+            throw new ApiError(StatusCodes.NOT_FOUND, 'Product catalog not found')
+        return await productModel.getAll(productCatalog._id);
     }
     catch(error)
     {

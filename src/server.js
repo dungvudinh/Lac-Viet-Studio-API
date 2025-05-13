@@ -14,10 +14,11 @@ const START_SERVER = () => {
     app.use(cookieParser())
     app.use(cors({
         origin: function(origin, callback){
-            if(allowOrigins.includes(origin))
-                callback(null, true)
-            else 
-                callback(new Error('Not allow by CORS'))
+            if (!origin || allowOrigins.includes(origin)) {
+                callback(null, true);
+              } else {
+                callback(new Error("Not allowed by CORS"));
+              }
         },
         credentials: true,               // Cho phép gửi cookie, authorization header, etc.
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Allow OPTIONS

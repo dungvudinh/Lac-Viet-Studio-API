@@ -148,6 +148,22 @@ const logout = async (req, res, next)=>
     next(error)
   }
 }
+const checkSession = async (req, res, next)=>
+{
+  try 
+  {
+    const refreshToken = req.cookies.refreshToken;
+    if(!refreshToken)
+      res.status(StatusCodes.UNAUTHORIZED).json({msg:'No session found'})
+    await userService.checkSession(refreshToken)
+    res.status(StatusCodes.OK).json({msg:'Session valid'})
+  }
+  catch(error)
+  {
+    console.log(error)
+    next(error)
+  }
+}
 export const userController = {
     signup,
     createNew,
@@ -158,5 +174,6 @@ export const userController = {
     setNewPassword,
     login,
     refreshToken,
-    logout
+    logout,
+    checkSession
 }
