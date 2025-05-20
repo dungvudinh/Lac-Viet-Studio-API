@@ -16,6 +16,7 @@ const PRODUCT_COLLECTION_SCHEMA = Joi.object({
     slug: Joi.string().required().min(3).trim().strict(), 
     images:Joi.array().items(Joi.object({
         url: Joi.string().uri().required(), 
+        publicId: Joi.string().required(),
         isRepresentative:Joi.boolean().optional()
     })),
     listedPrice: Joi.number().positive().required(), 
@@ -68,15 +69,18 @@ const getAll = async (_id)=>
     }
 }
 
-const update = async (id, newData)=>
+const update = async (catalogId,productId, newData)=>
 {
     try 
     {
         const validatedData = await validation(newData);
-        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).findOneAndUpdate(
-            {_id:new ObjectId(id)}, 
-            {$set:validatedData}, 
-            {new: true, runValidators: true}
+        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).updateOne(
+            {_id:new ObjectId(productId), catalogId: catalogId}, 
+            {
+                $set:{name: validatedData.name,listedPrice: validatedData.listedPrice, sellingPrice: validatedData.sellingPrice,age: validatedData.age},
+                $push: {images: {$each: validatedData.images}}
+            }, 
+            
         )
     }
     catch(error)
@@ -84,15 +88,37 @@ const update = async (id, newData)=>
         throw error
     }
 }
-const remove = async (id)=>
+const remove = async (catalogId, id)=>
 {
     try 
     {
-        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).findOneAndDelete({_id:new ObjectId(id)})
+        console.log(catalogId, id)
+        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).findOneAndDelete({_id:new ObjectId(id), catalogId: catalogId})
     }
     catch(error)
     {
         throw error
+    }
+}
+const removeImage = async (catalogId, productId,  publicId)=>
+{
+    try 
+    {
+        return await GET_DB().collection(PRODUCT_COLLECTION_NAME).updateOne(
+            {
+                _id: new ObjectId(productId),
+                catalogId: new ObjectId(catalogId)
+            }, 
+            {
+                $pull: {images: {publicId: publicId}}
+            }
+
+        )
+
+    }
+    catch(error)
+    {
+        throw error 
     }
 }
 const getBySlug = async (slug)=>
@@ -114,5 +140,6 @@ export const productModel = {
     getAll,
     update,
     remove,
+    removeImage,
     getBySlug
 }

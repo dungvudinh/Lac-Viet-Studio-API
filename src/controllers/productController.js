@@ -1,17 +1,18 @@
 import { StatusCodes } from "http-status-codes";
-import ApiError from "~/utils/apiError";
 import { productService } from "~/services/productService";
+
 const createNew = async (req, res, next)=>{
     try
     {
-        const images = req.files.map((file, index)=>{
-            var isRepresentative = false;
-            if(index === 0) isRepresentative = true;
-            return {url:file.path, isRepresentative}
-        })
-        const newProduct = {...req.body, images};
-        await productService.createNew(newProduct);
+      if(!req.files)
+        res.status(StatusCodes.BAD_REQUEST).json({msg:"No file uploaded"})
+      else 
+      {
+        const {productCatalogSlug} = req.params;
+        const files = req.files;
+        await productService.createNew(productCatalogSlug, files, req.body)
         res.status(StatusCodes.CREATED).json({msg:'Create product successfully'})
+      }
     }
     catch(error)
     {
@@ -51,9 +52,14 @@ const update = async (req, res, next)=>
 {
     try 
     {
-        const {id} = req.params;
-        const result = await productService.update(id, req.body);
-        return res.status(StatusCodes.OK).json(result)
+        if(!req.files)
+          res.status(StatusCodes.BAD_REQUEST).json({msg:'No file uploaded'})
+        else 
+        {
+          const {productCatalogSlug, id} = req.params;
+          await productService.update(productCatalogSlug, id, req.files, req.body);
+          return res.status(StatusCodes.OK).json({msg:'Update product successfully'})
+        }
     }
     catch(error)
     {
@@ -64,9 +70,10 @@ const remove = async (req, res, next)=>
 {
     try 
     {
-        const {id} = req.params;
-        const result = await productService.remove(id);
-        return res.status(StatusCodes.OK).json(result)
+        const {productCatalogSlug,id} = req.params;
+        console.log(productCatalogSlug)
+        await productService.remove(productCatalogSlug,id);
+        return res.status(StatusCodes.OK).json({msg:'Delete product successfully'})
     }
     catch(error)
     {

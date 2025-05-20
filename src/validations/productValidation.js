@@ -25,6 +25,7 @@ const update = async (req, res, next)=>
 {
     try 
     {
+        console.log(req.body)
         await correctCondition.validateAsync(req.body, {abortEarly:false})
         next();
     }

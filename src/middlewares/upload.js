@@ -1,16 +1,26 @@
+// import multer from 'multer';
+// import { CloudinaryStorage } from 'multer-storage-cloudinary';
+// import cloudinary from '~/config/cloudinary';
+// import path from 'path';
+
+// // Configure Multer Storage
+// const storage = new CloudinaryStorage({
+//     cloudinary: cloudinary,
+//     params: async (req, file) => {
+//         // Extract file name without extension
+//         const fileName = path.parse(file.originalname).name;
+//         return {
+//             folder: 'LacVietStudio', // Cloudinary folder name
+//             format: 'png', // Convert all images to PNG
+//             public_id: `${Date.now()}-${fileName}`, // Unique file name without extension
+//         };
+//     },
+// });
+
+// const upload = multer({ storage });
+
+// export default upload;
+// Change to memory storage
 import multer from 'multer';
-import { CloudinaryStorage } from 'multer-storage-cloudinary';
-import cloudinary from '~/config/cloudinary';
-// Configure Multer Storage
-const storage = new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params: {
-        folder: 'LacVietStudio', // Cloudinary folder name
-        format: async (req, file) => 'png', // Convert all images to PNG
-        public_id: (req, file) => `${Date.now()}-${file.originalname}`, // Unique file name
-    },
-});
-
-const upload = multer({ storage });
-
+const upload = multer({ storage: multer.memoryStorage() }); // Store files in memory
 export default upload;

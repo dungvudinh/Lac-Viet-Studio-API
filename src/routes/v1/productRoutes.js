@@ -9,6 +9,6 @@ Router.route('/')
     .post(upload.array('images', 10), productController.createNew)
 Router.route('/:id')
     .get(productController.getById)
-    .put(productValidation.update, productController.update)
+    .put(upload.array('images', 10),productController.update)
     .delete(productController.remove)
 export default Router;
