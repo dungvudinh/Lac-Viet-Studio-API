@@ -38,7 +38,7 @@ const START_SERVER = () => {
         res.status(status).json({ msg: message });
       });
     app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'dist', 'src', 'index.html'));
+    res.sendFile(path.join(__dirname, 'dist', 'index.html'));
     });
     // 3. Start server
     app.listen(env.APP_PORT, '0.0.0.0', () => {
