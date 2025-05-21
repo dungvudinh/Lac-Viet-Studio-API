@@ -302,7 +302,7 @@ const login = async (email, password, userAgent, ipAddress) =>
       throw new Error('Email or Password is incorrect')
     const isPasswordValid = await bcrypt.compare(password, user.password)
     if(!isPasswordValid)
-      throw new Error('Password or Email is incorrect')
+      throw new Error('Email or Password is incorrect')
     const accessToken = jwt.sign(
       {userId:user._id, email:user.email, role:user.role},
       env.ACCESS_TOKEN_SECRET_KEY,

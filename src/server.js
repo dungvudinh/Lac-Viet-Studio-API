@@ -37,6 +37,9 @@ const START_SERVER = () => {
         console.error('[Error Middleware]', err); // Optional
         res.status(status).json({ msg: message });
       });
+    app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'dist', 'src', 'index.html'));
+    });
     // 3. Start server
     app.listen(env.APP_PORT, '0.0.0.0', () => {
         console.log(`server is running on port: ${env.APP_PORT}`)
