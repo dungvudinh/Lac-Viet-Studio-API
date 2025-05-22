@@ -7,7 +7,7 @@ import cors from 'cors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 const app = express()
-const allowOrigins = [process.env.PROD_FRONT_URL, process.env.DEV_FRONT_URL]
+const allowOrigins = [env.PROD_FRONT_URL,env.DEV_FRONT_URL, env.PROD_BACK_URL, env.DEV_BACK_URL]
 
 const START_SERVER = () => {
     // 1. Parse body before any route

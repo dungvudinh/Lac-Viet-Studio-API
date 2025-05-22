@@ -18,5 +18,9 @@ export const env = {
     REFRESH_TOKEN_SECRET_KEY: process.env.REFRESH_TOKEN_SECRET_KEY,
     CLOUDINARY_NAME: process.env.CLOUDINARY_NAME,
     API_KEY:process.env.API_KEY,
-    API_SECRET:process.env.API_SECRET
+    API_SECRET:process.env.API_SECRET, 
+    DEV_FRONT_URL: process.env.DEV_FRONT_URL, 
+    PROD_FRONT_URL: process.env.PROD_FRONT_URL,
+    DEV_BACK_URL: process.env.DEV_BACK_URL, 
+    PROD_BACK_URL: process.env.PROD_BACK_URL
 }
