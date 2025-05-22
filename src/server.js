@@ -7,7 +7,7 @@ import cors from 'cors'
 import path from 'path'
 import cookieParser from 'cookie-parser'
 const app = express()
-const allowOrigins = [env.PROD_FRONT_URL,env.DEV_FRONT_URL,'https://admin.lacvietstudio.store', 'http://localhost:4173']
+const allowOrigins = [env.PROD_FRONT_URL,env.DEV_FRONT_URL,'https://admin.lacvietstudio.store', 'http://localhost:5174']
 
 const START_SERVER = () => {
     // 1. Parse body before any route
